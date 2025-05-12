@@ -6,60 +6,63 @@ using UnityEngine;
 
 public class TowerIA : MonoBehaviour, TowerAttack
 {
-    float range;
-    public EnemyStats currentTarget;
-    int acttack;
-    int timeShoot;
-    int damage;
-    List<EnemyStats>currentTargets = new List<EnemyStats>();
-    Transform rotationLook;
-    public void Attack()
+    [SerializeField] protected float range;
+    [SerializeField] protected int attack;
+    [SerializeField] protected int timeShoot;
+    [SerializeField] protected int damage;
+    
+    protected EnemyStats currentTarget;
+    protected List<EnemyStats> currentTargets = new List<EnemyStats>();
+    protected Transform rotationLook;
+
+    public virtual void Attack()
     {
-        currentTarget.TakeDamage(damage);
+        if (currentTarget != null)
+            currentTarget.TakeDamage(damage);
     }
 
-    public void EnemyDetection(){
-        var enemy = Physics.OverlapSphere(transform.position,range).Where(currentEnemy =>currentEnemy.GetComponent<GameObject>()).Select(currentEnemy=> currentEnemy.GetComponent<GameObject>()).ToList();
-        if (currentTargets.Count>0)
-        {
-            currentTarget =currentTargets[0];
-        }else if(currentTargets.Count==0)
-        {
-            currentTarget=null;
-        }
+    protected virtual void EnemyDetection()
+    {
+        var enemies = Physics.OverlapSphere(transform.position, range)
+            .Select(c => c.GetComponent<EnemyStats>())
+            .Where(e => e != null)
+            .ToList();
+
+        currentTargets = enemies;
+
+        currentTarget = currentTargets.Count > 0 ? currentTargets[0] : null;
     }
 
-    public void lookEnemy(){
-        if (currentTarget)
-        {
+    protected virtual void LookEnemy()
+    {
+        if (currentTarget != null)
             rotationLook.LookAt(currentTarget.transform);
-        }
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    protected virtual IEnumerator CoroutineAttack()
     {
-        StartCoroutine(corrutineAttack());
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        EnemyDetection();
-    }
-
-
-    IEnumerator corrutineAttack(){
-        
         while (true)
         {
             Attack();
             yield return new WaitForSeconds(timeShoot);
         }
     }
-    void OnDrawGizmos()
+
+    protected virtual void Start()
+    {
+        StartCoroutine(CoroutineAttack());
+    }
+
+    protected virtual void Update()
+    {
+        EnemyDetection();
+        LookEnemy();
+    }
+
+    protected void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
-        Gizmos.DrawSphere(transform.position,range);
+        Gizmos.DrawWireSphere(transform.position, range);
     }
 }
+
