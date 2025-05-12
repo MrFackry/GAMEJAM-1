@@ -7,15 +7,17 @@ public class SpawnEnemies : MonoBehaviour
 {
     //Atributos privados
     private EconomySystem economySystem;
+    private HealthSystem healthSystem;
     private List<GameObject> PoolEnemies = new List<GameObject>();
     private int poolSize = 10;
-    private int wave = 1;
+    private int wave = 4;
     private int enemiesPerWave = 3;
     private int baseHealth = 10;
     private bool isSpawningWave = false;
 
     //Atributos Serializados
-    [SerializeField] GameObject prefabEnemy;
+    [SerializeField] List<GameObject> prefabEnemy = new List<GameObject>();
+    [SerializeField] GameObject boss;
     [SerializeField] int spawnRate;
     [SerializeField] GameObject spawnPoint1;
     [SerializeField] GameObject spawnPoint2;
@@ -27,6 +29,7 @@ public class SpawnEnemies : MonoBehaviour
         AddToPool(poolSize);
         StartCoroutine(SpawnRutine());
         economySystem = FindFirstObjectByType<EconomySystem>();
+        healthSystem = FindFirstObjectByType<HealthSystem>();
     }
 
     // Update is called once per frame
@@ -61,11 +64,7 @@ public class SpawnEnemies : MonoBehaviour
         //creamos un for para que se agregen enemigos al pool deacuerdo al limite de objetos
         for (int i = 0; i < maxPrefab; i++)
         {
-            GameObject prefab;//intanciamos un GameObject para instanciar los prefabs
-            prefab = Instantiate(prefabEnemy, SpawnPoint(), Quaternion.identity);//se instancia el prefab en el punto de spawn
-            prefab.SetActive(false);//se desactiva para usarce cuando sea necesario
-            // Lo agrega a la lista de la piscina
-            PoolEnemies.Add(prefab);
+           AuxAddEnemy();
         }
     }
 
@@ -80,10 +79,18 @@ public class SpawnEnemies : MonoBehaviour
             }
         }
         // Si no hay enemigos disponibles, crear uno nuevo, agregarlo a la pool y devolverlo
-        GameObject newEnemy = Instantiate(prefabEnemy, SpawnPoint(), Quaternion.identity);
-        newEnemy.SetActive(false);
-        PoolEnemies.Add(newEnemy);
-        return newEnemy;
+        return null;
+    }
+    //metodo auxiliar para el agregar de enemigos
+    public void AuxAddEnemy()
+    {
+       foreach (GameObject enemy in prefabEnemy)
+       {
+        GameObject prefab;//intanciamos un GameObject para instanciar los prefabs
+        prefab = Instantiate(enemy, SpawnPoint(), Quaternion.identity);//se instancia el prefab en el punto de spawn
+        prefab.SetActive(false);//se desactiva para usarce cuando sea necesario
+        PoolEnemies.Add(prefab);// Lo agrega a la lista de la piscina
+       }
     }
     //metodo para crear una rutina de spawn
     public IEnumerator SpawnRutine()
@@ -99,28 +106,27 @@ public class SpawnEnemies : MonoBehaviour
         }
     }
     //metodo para crear una rutina de spawn
-    public IEnumerator SpawnWave()
+   public IEnumerator SpawnWave()
     {
         Debug.Log($"Iniciando oleada {wave}");
 
         int enemiesToSpawn = enemiesPerWave;
         bool spawnBoss = wave % 5 == 0;
+        bool maxBoss=true;
 
         for (int i = 0; i < enemiesToSpawn; i++)
         {
             GameObject enemy = SpawnEnemy();
             enemy.transform.position = SpawnPoint();
             enemy.SetActive(true);
-
-            /* sistema de aumento de vida y spawn boss
-            EnemyStats stats = enemy.GetComponent<EnemyStats>();
-            if (stats != null)
+            if (spawnBoss&&maxBoss)
             {
-                bool isBoss = spawnBoss && i == enemiesToSpawn - 1; // El último es el jefe
-                stats.Initialize(baseHealth, isBoss);
-            }*/
-
-            yield return new WaitForSeconds(1f);
+                maxBoss=false;
+                GameObject enemyBoss = boss;
+                enemyBoss= Instantiate(boss,SpawnPoint(),Quaternion.identity);
+                enemyBoss.SetActive(true);
+            }
+            yield return new WaitForSeconds(spawnRate);
         }
 
         // Espera a que todos los enemigos mueran
@@ -128,10 +134,12 @@ public class SpawnEnemies : MonoBehaviour
 
         // Prepara siguiente oleada
         wave++;
-        enemiesPerWave += 2; // Incremento progresivo
-        baseHealth += 5;     // Enemigos con más vida
+        maxBoss=true;
+        enemiesPerWave += 1;
+        baseHealth += 5;
         isSpawningWave = false;
     }
+
 
 
     //metodos para contar los enemigos activos
@@ -155,5 +163,6 @@ public class SpawnEnemies : MonoBehaviour
     {
         Enemy.SetActive(false);
         economySystem.EnemyDefeated(Enemy);
+        healthSystem.EnemyDestroyed(Enemy);
     }
 }

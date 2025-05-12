@@ -26,11 +26,11 @@ public class EconomySystem : MonoBehaviour
         switch (enemyTag)
         {
             case "Enemy":
-                return 5;
-            case "Rapido":
-                return 7;
-            case "Boss":
+                return 10;
+            case "EnemyFaster":
                 return 20;
+            case "EnemyBoss":
+                return 50;
             default:
                 Debug.LogWarning($"El enemigo con tag {enemyTag} no tiene recompensa asignada.");
                 return 0; // Si el tag no está definido, no se otorgan monedas

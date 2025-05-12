@@ -4,7 +4,6 @@ public class EnemyStats : MonoBehaviour
 {
     public int maxHealth = 10; // Vida base del enemigo
     public int currentHealth; // Vida actual del enemigo
-
     void Start()
     {
         currentHealth = maxHealth;
