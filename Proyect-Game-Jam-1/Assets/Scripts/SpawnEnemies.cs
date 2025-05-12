@@ -8,6 +8,11 @@ public class SpawnEnemies : MonoBehaviour
     //Atributos privados
     private List<GameObject> PoolEnemies = new List<GameObject>();
     private int poolSize = 10;
+    private int wave = 1;
+    private int enemiesPerWave = 3;
+    private int baseHealth = 10;
+    private bool isSpawningWave = false;
+
     //Atributos Serializados
     [SerializeField] GameObject prefabEnemy;
     [SerializeField] int spawnRate;
@@ -83,17 +88,48 @@ public class SpawnEnemies : MonoBehaviour
     {
         while (true)
         {
-            int activeCount = PoolEnemies.Count(enemy => enemy.activeInHierarchy);//contador que cuenta cuantos enemigos estan activos
-            //si el contador es menor va a spawnear a los enemigos
-            if (activeCount < poolSize)
+            if (!isSpawningWave)
             {
-                GameObject enemy = SpawnEnemy();
-                enemy.transform.position = SpawnPoint();
-                enemy.SetActive(true);
+                isSpawningWave = true;
+                yield return StartCoroutine(SpawnWave());
             }
-            yield return new WaitForSeconds(spawnRate);
+            yield return null;
         }
     }
+    //metodo para crear una rutina de spawn
+    public IEnumerator SpawnWave(){
+         Debug.Log($"Iniciando oleada {wave}");
+
+    int enemiesToSpawn = enemiesPerWave;
+    bool spawnBoss = wave % 5 == 0;
+
+    for (int i = 0; i < enemiesToSpawn; i++)
+    {
+        GameObject enemy = SpawnEnemy();
+        enemy.transform.position = SpawnPoint();
+        enemy.SetActive(true);
+
+        /* sistema de aumento de vida y spawn boss
+        EnemyStats stats = enemy.GetComponent<EnemyStats>();
+        if (stats != null)
+        {
+            bool isBoss = spawnBoss && i == enemiesToSpawn - 1; // El último es el jefe
+            stats.Initialize(baseHealth, isBoss);
+        }*/
+
+        yield return new WaitForSeconds(1f);
+    }
+
+    // Espera a que todos los enemigos mueran
+    yield return new WaitUntil(() => EnemysEnable() == 0);
+
+    // Prepara siguiente oleada
+    wave++;
+    enemiesPerWave += 2; // Incremento progresivo
+    baseHealth += 5;     // Enemigos con más vida
+    isSpawningWave = false;
+    }
+
 
     //metodos para contar los enemigos activos
     public int EnemysEnable()
@@ -108,5 +144,12 @@ public class SpawnEnemies : MonoBehaviour
         }
         return count;
 
+    }
+
+
+    //metodo para desactivar un enemigo
+    public void DisablePrefabs(GameObject Enemy)
+    {
+        Enemy.SetActive(false);
     }
 }
