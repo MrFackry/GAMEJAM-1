@@ -6,6 +6,7 @@ using UnityEngine;
 public class SpawnEnemies : MonoBehaviour
 {
     //Atributos privados
+    private EconomySystem economySystem;
     private List<GameObject> PoolEnemies = new List<GameObject>();
     private int poolSize = 10;
     private int wave = 1;
@@ -25,6 +26,7 @@ public class SpawnEnemies : MonoBehaviour
     {
         AddToPool(poolSize);
         StartCoroutine(SpawnRutine());
+        economySystem = FindFirstObjectByType<EconomySystem>();
     }
 
     // Update is called once per frame
@@ -97,37 +99,38 @@ public class SpawnEnemies : MonoBehaviour
         }
     }
     //metodo para crear una rutina de spawn
-    public IEnumerator SpawnWave(){
-         Debug.Log($"Iniciando oleada {wave}");
-
-    int enemiesToSpawn = enemiesPerWave;
-    bool spawnBoss = wave % 5 == 0;
-
-    for (int i = 0; i < enemiesToSpawn; i++)
+    public IEnumerator SpawnWave()
     {
-        GameObject enemy = SpawnEnemy();
-        enemy.transform.position = SpawnPoint();
-        enemy.SetActive(true);
+        Debug.Log($"Iniciando oleada {wave}");
 
-        /* sistema de aumento de vida y spawn boss
-        EnemyStats stats = enemy.GetComponent<EnemyStats>();
-        if (stats != null)
+        int enemiesToSpawn = enemiesPerWave;
+        bool spawnBoss = wave % 5 == 0;
+
+        for (int i = 0; i < enemiesToSpawn; i++)
         {
-            bool isBoss = spawnBoss && i == enemiesToSpawn - 1; // El último es el jefe
-            stats.Initialize(baseHealth, isBoss);
-        }*/
+            GameObject enemy = SpawnEnemy();
+            enemy.transform.position = SpawnPoint();
+            enemy.SetActive(true);
 
-        yield return new WaitForSeconds(1f);
-    }
+            /* sistema de aumento de vida y spawn boss
+            EnemyStats stats = enemy.GetComponent<EnemyStats>();
+            if (stats != null)
+            {
+                bool isBoss = spawnBoss && i == enemiesToSpawn - 1; // El último es el jefe
+                stats.Initialize(baseHealth, isBoss);
+            }*/
 
-    // Espera a que todos los enemigos mueran
-    yield return new WaitUntil(() => EnemysEnable() == 0);
+            yield return new WaitForSeconds(1f);
+        }
 
-    // Prepara siguiente oleada
-    wave++;
-    enemiesPerWave += 2; // Incremento progresivo
-    baseHealth += 5;     // Enemigos con más vida
-    isSpawningWave = false;
+        // Espera a que todos los enemigos mueran
+        yield return new WaitUntil(() => EnemysEnable() == 0);
+
+        // Prepara siguiente oleada
+        wave++;
+        enemiesPerWave += 2; // Incremento progresivo
+        baseHealth += 5;     // Enemigos con más vida
+        isSpawningWave = false;
     }
 
 
@@ -151,5 +154,6 @@ public class SpawnEnemies : MonoBehaviour
     public void DisablePrefabs(GameObject Enemy)
     {
         Enemy.SetActive(false);
+        economySystem.EnemyDefeated(Enemy);
     }
 }
