@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI; // Necesario para modificar la velocidad de los enemigos
 
 public class TowerPosion : TowerIA
 {
@@ -28,19 +29,24 @@ public class TowerPosion : TowerIA
         Collider[] colliders = Physics.OverlapSphere(transform.position, range);
         foreach (var col in colliders)
         {
-            EnemyStats enemy = col.GetComponent<EnemyStats>();
-            if (enemy != null)
+            EnemyAI enemyAI = col.GetComponent<EnemyAI>(); // Buscamos el script EnemyAI
+            if (enemyAI != null)
             {
-                StartCoroutine(ApplySlow(enemy));
+                StartCoroutine(ApplySlow(enemyAI));
             }
         }
     }
 
-    IEnumerator ApplySlow(EnemyStats enemy)
+    IEnumerator ApplySlow(EnemyAI enemyAI)
     {
-        float originalSpeed = enemy.speed; // Asumiendo que EnemyStats tiene 'speed'
-        enemy.speed *= (1f - slowAmount); // Aplica ralentización del 20%
-        yield return new WaitForSeconds(slowDuration);
-        enemy.speed = originalSpeed; // Restaura velocidad
+        NavMeshAgent agent = enemyAI.GetComponent<NavMeshAgent>(); // Obtenemos el NavMeshAgent
+        if (agent != null)
+        {
+            float originalSpeed = agent.speed; // Guardamos la velocidad original
+            agent.speed *= (1f - slowAmount); // Aplicamos la ralentización del 20%
+            yield return new WaitForSeconds(slowDuration);
+            agent.speed = originalSpeed; // Restauramos la velocidad original
+        }
     }
 }
+
