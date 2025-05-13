@@ -16,7 +16,7 @@ public class EnemyStats : MonoBehaviour
 
         if (currentHealth <= 0)
         {
-            FindObjectOfType<HealthSystem>().EnemyDestroyed(gameObject);
+            FindFirstObjectByType<HealthSystem>().EnemyDestroyed(gameObject);
         }
     }
 }

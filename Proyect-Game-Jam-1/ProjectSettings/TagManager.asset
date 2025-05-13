@@ -6,6 +6,13 @@ TagManager:
   tags:
   - Enemy
   - Plataforma
+  - EnemyBoss
+  - EnemyFaster
+  - TowerBasic
+  - TowerFuego
+  - TowerHielo
+  - TowerPosion
+  - TowerArcher
   layers:
   - Default
   - TransparentFX

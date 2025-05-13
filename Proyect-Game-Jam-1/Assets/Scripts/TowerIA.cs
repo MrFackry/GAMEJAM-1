@@ -7,13 +7,13 @@ using UnityEngine;
 public class TowerIA : MonoBehaviour, TowerAttack
 {
     [SerializeField] protected float range;
-    [SerializeField] protected int attack;
     [SerializeField] protected int timeShoot;
     [SerializeField] protected int damage;
-    
+    [SerializeField] protected int price;
     protected EnemyStats currentTarget;
     protected List<EnemyStats> currentTargets = new List<EnemyStats>();
     protected Transform rotationLook;
+    protected EconomySystem economySystem;
 
     public virtual void Attack()
     {
@@ -35,8 +35,9 @@ public class TowerIA : MonoBehaviour, TowerAttack
 
     protected virtual void LookEnemy()
     {
-        if (currentTarget != null)
+        if (currentTarget != null&& rotationLook != null)
             rotationLook.LookAt(currentTarget.transform);
+            
     }
 
     protected virtual IEnumerator CoroutineAttack()
@@ -64,5 +65,7 @@ public class TowerIA : MonoBehaviour, TowerAttack
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, range);
     }
+
+    public int GetPrice() => price;
 }
 

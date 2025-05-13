@@ -12,10 +12,10 @@ GameObject:
   - component: {fileID: 3491249089337870907}
   - component: {fileID: 4762595822748386583}
   - component: {fileID: 8372580276374425545}
-  - component: {fileID: 7606187415820692473}
+  - component: {fileID: -7060059675490159042}
   m_Layer: 0
-  m_Name: Tower
-  m_TagString: TowerBasic
+  m_Name: TowerFuego
+  m_TagString: TowerPosion
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -111,7 +111,7 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &7606187415820692473
+--- !u!114 &-7060059675490159042
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -120,11 +120,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 4680418589292154013}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 95eb467184fc51b4abce2c2d042655db, type: 3}
+  m_Script: {fileID: 11500000, guid: 77570b9dbf0ea7547b9f9c571a9dc4e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  range: 10
-  timeShoot: 2
-  damage: 10
-  price: 50
-  Tower: {fileID: 4680418589292154013}
+  range: 0
+  timeShoot: 0
+  damage: 0
+  price: 0
+  Tower: {fileID: 0}

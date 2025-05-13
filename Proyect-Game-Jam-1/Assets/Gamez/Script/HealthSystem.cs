@@ -13,21 +13,28 @@ public class HealthSystem : MonoBehaviour
 
     public void EnemyDestroyed(GameObject enemy)
     {
-        EnemyStats enemyStats = enemy.GetComponent<EnemyStats>();
-        if (enemyStats != null)
-        {
-            int remainingHealth = enemyStats.currentHealth; // Vida restante del enemigo
-            playerHealth -= remainingHealth; // Se descuenta de la vida del jugador
-            Debug.Log($"Enemigo destruido con {remainingHealth} de vida restante. Vida del jugador: {playerHealth}");
-
-            if (playerHealth <= 0)
-            {
-                Debug.Log("¡El jugador ha sido derrotado!");
-                // Aquí puedes agregar lógica de fin de juego
-            }
-        }
-
         economySystem.EnemyDefeated(enemy); // Recompensa monetaria del jugador
         enemy.SetActive(false);
     }
+    public void TakeDamage(GameObject enemy)
+    {
+        EnemyStats enemyStats = enemy.GetComponent<EnemyStats>();
+        if (enemyStats != null)
+        {
+            int remainingHealth = enemyStats.currentHealth;
+
+            if (remainingHealth > 0)
+            {
+                playerHealth -= remainingHealth;
+                Debug.Log($"Enemigo alcanzó la base con {remainingHealth} de vida. Vida del jugador: {playerHealth}");
+
+                if (playerHealth <= 0)
+                {
+                    Debug.Log("¡El jugador ha sido derrotado!");
+                    // Lógica de fin de juego aquí
+                }
+            }
+        }
+    }
+
 }

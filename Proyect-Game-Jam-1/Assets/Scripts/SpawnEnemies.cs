@@ -8,11 +8,11 @@ public class SpawnEnemies : MonoBehaviour
     //Atributos privados
     private EconomySystem economySystem;
     private HealthSystem healthSystem;
+    private EnemyStats enemyStats;
     private List<GameObject> PoolEnemies = new List<GameObject>();
     private int poolSize = 10;
-    private int wave = 4;
+    private int wave = 1;
     private int enemiesPerWave = 3;
-    private int baseHealth = 10;
     private bool isSpawningWave = false;
 
     //Atributos Serializados
@@ -64,7 +64,7 @@ public class SpawnEnemies : MonoBehaviour
         //creamos un for para que se agregen enemigos al pool deacuerdo al limite de objetos
         for (int i = 0; i < maxPrefab; i++)
         {
-           AuxAddEnemy();
+            AuxAddEnemy();
         }
     }
 
@@ -84,13 +84,13 @@ public class SpawnEnemies : MonoBehaviour
     //metodo auxiliar para el agregar de enemigos
     public void AuxAddEnemy()
     {
-       foreach (GameObject enemy in prefabEnemy)
-       {
-        GameObject prefab;//intanciamos un GameObject para instanciar los prefabs
-        prefab = Instantiate(enemy, SpawnPoint(), Quaternion.identity);//se instancia el prefab en el punto de spawn
-        prefab.SetActive(false);//se desactiva para usarce cuando sea necesario
-        PoolEnemies.Add(prefab);// Lo agrega a la lista de la piscina
-       }
+        foreach (GameObject enemy in prefabEnemy)
+        {
+            GameObject prefab;//intanciamos un GameObject para instanciar los prefabs
+            prefab = Instantiate(enemy, SpawnPoint(), Quaternion.identity);//se instancia el prefab en el punto de spawn
+            prefab.SetActive(false);//se desactiva para usarce cuando sea necesario
+            PoolEnemies.Add(prefab);// Lo agrega a la lista de la piscina
+        }
     }
     //metodo para crear una rutina de spawn
     public IEnumerator SpawnRutine()
@@ -106,37 +106,56 @@ public class SpawnEnemies : MonoBehaviour
         }
     }
     //metodo para crear una rutina de spawn
-   public IEnumerator SpawnWave()
+    public IEnumerator SpawnWave()
     {
         Debug.Log($"Iniciando oleada {wave}");
 
         int enemiesToSpawn = enemiesPerWave;
         bool spawnBoss = wave % 5 == 0;
-        bool maxBoss=true;
+        bool maxBoss = true;
 
         for (int i = 0; i < enemiesToSpawn; i++)
         {
-            GameObject enemy = SpawnEnemy();
+            GameObject enemy = SpawnEnemy(); // retorna un enemigo
             enemy.transform.position = SpawnPoint();
-            enemy.SetActive(true);
-            if (spawnBoss&&maxBoss)
+
+            EnemyStats stats = enemy.GetComponent<EnemyStats>();
+            if (stats != null)
             {
-                maxBoss=false;
-                GameObject enemyBoss = boss;
-                enemyBoss= Instantiate(boss,SpawnPoint(),Quaternion.identity);
+                stats.maxHealth += wave * 2;  // Aumenta la vida base segun la oleada
+                stats.currentHealth = stats.maxHealth;
+                Debug.Log("-----------------");
+                Debug.Log("Vida de enemigo: " + stats.gameObject.name + " vida:" + stats.maxHealth);
+                Debug.Log("-----------------");
+            }
+
+            enemy.SetActive(true);
+
+            if (spawnBoss && maxBoss)
+            {
+                maxBoss = false;
+                GameObject enemyBoss = Instantiate(boss, SpawnPoint(), Quaternion.identity);
+
+                EnemyStats bossStats = enemyBoss.GetComponent<EnemyStats>();
+                if (bossStats != null)
+                {
+                    bossStats.maxHealth += wave * 5; // Más vida para el jefe
+                    Debug.Log("-----------------");
+                    Debug.Log("Vida de enemigo: " + boss.gameObject.name + " vida:" + bossStats.maxHealth);
+                    Debug.Log("-----------------");
+                    bossStats.currentHealth = bossStats.maxHealth;
+                }
+
                 enemyBoss.SetActive(true);
             }
+
             yield return new WaitForSeconds(spawnRate);
         }
 
-        // Espera a que todos los enemigos mueran
         yield return new WaitUntil(() => EnemysEnable() == 0);
 
-        // Prepara siguiente oleada
         wave++;
-        maxBoss=true;
         enemiesPerWave += 1;
-        baseHealth += 5;
         isSpawningWave = false;
     }
 

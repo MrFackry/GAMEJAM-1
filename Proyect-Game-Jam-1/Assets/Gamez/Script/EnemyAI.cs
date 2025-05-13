@@ -8,12 +8,14 @@ public class EnemyAI : MonoBehaviour
 
     private NavMeshAgent agent; // Componente NavMeshAgent
     private SpawnEnemies spawnEnemies;
+    private HealthSystem healthSystem;
     void Start()
     {
         // Obtiene el componente NavMeshAgent del enemigo
         agent = GetComponent<NavMeshAgent>();
         spawnEnemies = FindFirstObjectByType<SpawnEnemies>();
         player = GameObject.FindWithTag("Player");
+        healthSystem = FindFirstObjectByType<HealthSystem>();
     }
 
     void Update()
@@ -28,15 +30,11 @@ public class EnemyAI : MonoBehaviour
         // Verifica si el enemigo alcanzó al jugador
         if (other.CompareTag("Player"))
         {
-            // Obtiene la vida del jugador
-            /*PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
-
             // Si el jugador tiene un sistema de vida, aplicamos daño
-            if (playerHealth != null)
+            if (healthSystem != null)
             {
-                int damage = GetComponent<EnemyDifficulty>().damageValue; // Daño del enemigo
-                playerHealth.TakeDamage(damage);
-            }*/
+                healthSystem.TakeDamage(gameObject);
+            }
 
             // Destruye al enemigo después de hacer daño
             spawnEnemies.DisablePrefabs(gameObject);

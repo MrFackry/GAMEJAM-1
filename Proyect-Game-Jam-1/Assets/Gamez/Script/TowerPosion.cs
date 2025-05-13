@@ -11,7 +11,6 @@ public class TowerPosion : TowerIA
 
     void Start()
     {
-        StartCoroutine(corrutineAttack());
         StartCoroutine(SlowEffectRoutine());
     }
 
