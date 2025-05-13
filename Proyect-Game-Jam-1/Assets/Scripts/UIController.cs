@@ -28,6 +28,8 @@ public class UIController : MonoBehaviour
     {
         spawnEnemies= FindFirstObjectByType<SpawnEnemies>();
         uiController = FindFirstObjectByType<UIController>(); // Encuentra el objeto en la escena
+        CountWave();
+        CountCoint();
     }
 
     // Update is called once per frame
