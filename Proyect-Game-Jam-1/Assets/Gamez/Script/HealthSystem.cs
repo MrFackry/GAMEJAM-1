@@ -3,7 +3,7 @@ using UnityEngine.UI; // Necesario para usar Slider
 
 public class HealthSystem : MonoBehaviour
 {
-    public float playerHealth = 200; // Vida inicial del jugador
+    public int playerHealth = 200; // Vida inicial del jugador
     public Slider healthSlider; // Referencia al Slider de la UI
 
     private EconomySystem economySystem;
@@ -15,7 +15,6 @@ public class HealthSystem : MonoBehaviour
         economySystem = FindFirstObjectByType<EconomySystem>();
         spawnEnemies = FindFirstObjectByType<SpawnEnemies>();
         uIController = FindFirstObjectByType<UIController>();
-
         // Inicializar el Slider
         if (healthSlider != null)
         {
