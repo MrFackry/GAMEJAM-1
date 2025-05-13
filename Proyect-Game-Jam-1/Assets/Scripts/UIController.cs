@@ -12,6 +12,7 @@ public class UIController : MonoBehaviour
     [SerializeField] TextMeshProUGUI textWeve;
     [SerializeField] TextMeshProUGUI textEnemies;
     private SpawnEnemies spawnEnemies;
+    private UIController uiController;
 
     public bool IsGameOver=false;
     public bool isPlay=false;
@@ -20,6 +21,7 @@ public class UIController : MonoBehaviour
     void Start()
     {
         spawnEnemies= FindFirstObjectByType<SpawnEnemies>();
+        uiController = FindFirstObjectByType<UIController>(); // Encuentra el objeto en la escena
     }
 
     // Update is called once per frame
@@ -34,6 +36,12 @@ public class UIController : MonoBehaviour
         isPlay=true;
     }
     public void GameOver(){
+         
+    {
+        Debug.Log("¡El jugador ha sido derrotado!");
+        uiController.IsGameOver = true; // Marca el juego como terminado
+        uiController.panelGameOver.SetActive(true); // Muestra el panel de Game Over
+    }
 
     }
     public void ResetGame()
