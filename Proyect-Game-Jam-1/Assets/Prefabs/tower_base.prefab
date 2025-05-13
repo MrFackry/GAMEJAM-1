@@ -10,15 +10,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: cf152dfac6a6db14c8cb50e0c9ed9206, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -6.38
+      value: -1.1599998
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: cf152dfac6a6db14c8cb50e0c9ed9206, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.41
+      value: -2.53
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: cf152dfac6a6db14c8cb50e0c9ed9206, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 16.04186
+      value: 4.4199996
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: cf152dfac6a6db14c8cb50e0c9ed9206, type: 3}
       propertyPath: m_LocalRotation.w
@@ -26,7 +26,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: cf152dfac6a6db14c8cb50e0c9ed9206, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: cf152dfac6a6db14c8cb50e0c9ed9206, type: 3}
       propertyPath: m_LocalRotation.y
@@ -120,4 +120,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04f229c8bf7c8924291cf2f4f5f56f54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TowerList: []
+  TowerList:
+  - {fileID: 4680418589292154013, guid: fe3275a2ec91eb94cb111255b5271db0, type: 3}
+  - {fileID: 4680418589292154013, guid: 0dea674381b01f14596dd7db74d9339f, type: 3}
+  - {fileID: 4680418589292154013, guid: e52f3b8526fc05141bd17f7c17d8dc16, type: 3}
+  - {fileID: 4680418589292154013, guid: fd606e9f90d4ef64e813626f979474eb, type: 3}
+  - {fileID: 4680418589292154013, guid: 4241214ded5f6a04f968d3c947b0cbd6, type: 3}

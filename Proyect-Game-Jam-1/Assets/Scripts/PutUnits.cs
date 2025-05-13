@@ -25,7 +25,8 @@ public class PutUnits : MonoBehaviour
 
     public void PutUnit(GameObject unit)
     {
-        GameObject newUnit = Instantiate(unit, transform.position, Quaternion.identity);
+        Vector3 y = new Vector3(0,3,0);
+        GameObject newUnit = Instantiate(unit, transform.position+y, Quaternion.identity);
         Debug.Log("Unidad " + newUnit.name + " instanciada en la posición: " + transform.position);
     }
 }
