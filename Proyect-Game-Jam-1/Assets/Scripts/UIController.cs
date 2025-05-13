@@ -14,8 +14,8 @@ public class UIController : MonoBehaviour
     [SerializeField] TextMeshProUGUI textCoins;
     [SerializeField] EconomySystem economySystem;
     private SpawnEnemies spawnEnemies;
-    private int totalScore = 0;
-
+    private UIController uiController;
+    private int totalScore=0;
     public bool IsGameOver = false;
     public bool isPlay = false;
     private Button play;
@@ -26,10 +26,8 @@ public class UIController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        if (textCoins == null) Debug.LogError("textCoins está null en UIController.");
-        if (economySystem == null) Debug.LogError("economySystem está null en UIController.");
-        CountWave();
-        CountCoint();
+        spawnEnemies= FindFirstObjectByType<SpawnEnemies>();
+        uiController = FindFirstObjectByType<UIController>(); // Encuentra el objeto en la escena
     }
 
     // Update is called once per frame
@@ -48,8 +46,13 @@ public class UIController : MonoBehaviour
             StartCoroutine(spawnEnemies.SpawnRutine());
         }
     }
-    public void GameOver()
+    public void GameOver(){
+         
     {
+        Debug.Log("¡El jugador ha sido derrotado!");
+        uiController.IsGameOver = true; // Marca el juego como terminado
+        uiController.panelGameOver.SetActive(true); // Muestra el panel de Game Over
+    }
 
     }
     public void ResetGame()
