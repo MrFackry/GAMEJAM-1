@@ -126,7 +126,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   range: 15
   timeShoot: 1
-  damage: 10
+  damage: 1
   price: 100
   Tower: {fileID: 4680418589292154013}
 --- !u!114 &4936946319244795943
