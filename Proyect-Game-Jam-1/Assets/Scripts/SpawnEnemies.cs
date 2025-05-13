@@ -11,9 +11,11 @@ public class SpawnEnemies : MonoBehaviour
     private EnemyStats enemyStats;
     private List<GameObject> PoolEnemies = new List<GameObject>();
     private int poolSize = 10;
-    private int wave = 1;
+    public int wave = 1;
     private int enemiesPerWave = 3;
     private bool isSpawningWave = false;
+    private int count=0;
+    private UIController uIController;
 
     //Atributos Serializados
     [SerializeField] List<GameObject> prefabEnemy = new List<GameObject>();
@@ -27,9 +29,13 @@ public class SpawnEnemies : MonoBehaviour
     void Start()
     {
         AddToPool(poolSize);
-        StartCoroutine(SpawnRutine());
+        if (uIController.isPlay)
+        {
+            StartCoroutine(SpawnRutine());
+        }  
         economySystem = FindFirstObjectByType<EconomySystem>();
         healthSystem = FindFirstObjectByType<HealthSystem>();
+        uIController = FindFirstObjectByType<UIController>();
     }
 
     // Update is called once per frame
@@ -108,7 +114,8 @@ public class SpawnEnemies : MonoBehaviour
     //metodo para crear una rutina de spawn
     public IEnumerator SpawnWave()
     {
-        Debug.Log($"Iniciando oleada {wave}");
+        
+            Debug.Log($"Iniciando oleada {wave}");
 
         int enemiesToSpawn = enemiesPerWave;
         bool spawnBoss = wave % 5 == 0;
@@ -176,11 +183,12 @@ public class SpawnEnemies : MonoBehaviour
 
     }
 
-
     //metodo para desactivar un enemigo
     public void DisablePrefabs(GameObject Enemy)
     {
+        count++;
         Enemy.SetActive(false);
+        uIController.SumarScore(count);
         economySystem.EnemyDefeated(Enemy);
         healthSystem.EnemyDestroyed(Enemy);
     }

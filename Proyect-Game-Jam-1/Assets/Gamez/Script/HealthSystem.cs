@@ -4,10 +4,12 @@ public class HealthSystem : MonoBehaviour
 {
     public int playerHealth = 200; // Vida inicial del jugador
     private EconomySystem economySystem;
+    private SpawnEnemies spawnEnemies;
 
     void Start()
     {
         economySystem = FindFirstObjectByType<EconomySystem>();
+        spawnEnemies =FindFirstObjectByType<SpawnEnemies>();
         Debug.Log($"Inicio del juego. Vida del jugador: {playerHealth}");
     }
 
