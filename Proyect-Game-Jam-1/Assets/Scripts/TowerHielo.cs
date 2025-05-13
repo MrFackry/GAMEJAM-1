@@ -1,22 +1,47 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-public class TowerHielo:TowerIA{
+using UnityEngine.AI;
+public class TowerHielo : TowerIA
+{
 
-[SerializeField] GameObject Tower;
-private int count;
-private bool isFrozen;
-private float frozenDuration=10f;
-public override void Attack(){
-    count++;
-    base.Attack();
-}
+    [SerializeField] GameObject Tower;
+    [SerializeField] int count;
+    [SerializeField] bool isFrozen;
+    [SerializeField] float frozenDuration = 10f;
+    [SerializeField] 
+    private EnemyAI enemyAI;
 
-IEnumerator Congelar(){
-    if (count==10&&!isFrozen)
+    public override void Attack()
     {
-        isFrozen=true;
-        yield return new WaitForSeconds(frozenDuration);
-        isFrozen=false;
+        count++;
+        if (count == 1 && !isFrozen)
+        {
+            foreach (var item in currentTargets)
+            {
+                if (item.GetComponent<EnemyAI>().agent.speed != 0)
+                {
+                    enemyAI = item.GetComponent<EnemyAI>();
+                    StartCoroutine(Congelar(item.GetComponent<EnemyAI>()));
+                }
+            }
+            count=0;
+        }
+        base.Attack();
     }
-}
+
+    IEnumerator Congelar(EnemyAI enemyAI)
+    {
+
+        Debug.Log("congelado");
+        isFrozen = true;
+        float originalSpeed = enemyAI.agent.speed;
+        enemyAI.agent.speed = 0;
+        yield return new WaitForSeconds(frozenDuration);
+        isFrozen = false;
+        Debug.Log("desacongelado");
+        enemyAI.agent.speed = originalSpeed;
+        count = 0;
+        StopAllCoroutines();
+    }
 }

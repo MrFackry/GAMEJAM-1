@@ -16,7 +16,7 @@ public class EconomySystem : MonoBehaviour
     {
         int reward = GetRewardByTag(enemy.tag); // Obtiene la recompensa según el tag
         playerCoins += reward; // Suma las monedas al total del jugador
-
+         FindAnyObjectByType<UIController>().CountCoint();
         Debug.Log($"Eliminaste un enemigo tipo {enemy.tag}. Ganaste {reward} monedas. Total: {playerCoins}");
     }
     public void TowerPut(GameObject tower)
@@ -58,6 +58,7 @@ public class EconomySystem : MonoBehaviour
         if (towerIA != null)
         {
             playerCoins -= towerIA.GetPrice();
+             FindAnyObjectByType<UIController>().CountCoint();
             Debug.Log($"Pagaste {towerIA.GetPrice()} monedas. Total restante: {playerCoins}");
         }
     }
@@ -66,6 +67,19 @@ public class EconomySystem : MonoBehaviour
     public void EndRound()
     {
         playerCoins += roundReward; // Se suman las monedas de recompensa por ronda
+         FindAnyObjectByType<UIController>().CountCoint();
         Debug.Log($"Ronda terminada. Recibiste {roundReward} monedas. Total: {playerCoins}");
     }
+
+    public void SellTower(GameObject tower)
+{
+    TowerIA towerIA = tower.GetComponent<TowerIA>();
+    if (towerIA != null)
+    {
+        int sellPrice = Mathf.FloorToInt(towerIA.GetPrice() * 0.5f); // 50% del precio original
+        playerCoins += sellPrice;
+        FindAnyObjectByType<UIController>().CountCoint();
+        Debug.Log($"Vendiste la torre por {sellPrice} monedas. Total: {playerCoins}");
+    }
+}
 }

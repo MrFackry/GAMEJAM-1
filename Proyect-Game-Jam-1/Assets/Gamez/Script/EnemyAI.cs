@@ -6,7 +6,7 @@ public class EnemyAI : MonoBehaviour
     //public float speed = 2f; // Velocidad del enemigo
     private GameObject player; // Referencia al jugador
 
-    private NavMeshAgent agent; // Componente NavMeshAgent
+    public NavMeshAgent agent; // Componente NavMeshAgent
     private SpawnEnemies spawnEnemies;
     private HealthSystem healthSystem;
     void Start()

@@ -11,9 +11,11 @@ public class SpawnEnemies : MonoBehaviour
     private EnemyStats enemyStats;
     private List<GameObject> PoolEnemies = new List<GameObject>();
     private int poolSize = 10;
-    private int wave = 1;
+    public int wave = 1;
     private int enemiesPerWave = 3;
     private bool isSpawningWave = false;
+    private int count = 0;
+    private UIController uIController;
 
     //Atributos Serializados
     [SerializeField] List<GameObject> prefabEnemy = new List<GameObject>();
@@ -23,13 +25,18 @@ public class SpawnEnemies : MonoBehaviour
     [SerializeField] GameObject spawnPoint2;
     [SerializeField] GameObject spawnPoint3;
 
+
+    void Awake()
+    {
+        economySystem = FindFirstObjectByType<EconomySystem>();
+        healthSystem = FindFirstObjectByType<HealthSystem>();
+        uIController = FindFirstObjectByType<UIController>();
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         AddToPool(poolSize);
-        StartCoroutine(SpawnRutine());
-        economySystem = FindFirstObjectByType<EconomySystem>();
-        healthSystem = FindFirstObjectByType<HealthSystem>();
     }
 
     // Update is called once per frame
@@ -79,7 +86,10 @@ public class SpawnEnemies : MonoBehaviour
             }
         }
         // Si no hay enemigos disponibles, crear uno nuevo, agregarlo a la pool y devolverlo
-        return null;
+        GameObject newEnemy = Instantiate(prefabEnemy[Random.Range(0, prefabEnemy.Count)], SpawnPoint(), Quaternion.identity);
+        newEnemy.SetActive(false);
+        PoolEnemies.Add(newEnemy);
+        return newEnemy;
     }
     //metodo auxiliar para el agregar de enemigos
     public void AuxAddEnemy()
@@ -108,6 +118,7 @@ public class SpawnEnemies : MonoBehaviour
     //metodo para crear una rutina de spawn
     public IEnumerator SpawnWave()
     {
+
         Debug.Log($"Iniciando oleada {wave}");
 
         int enemiesToSpawn = enemiesPerWave;
@@ -157,9 +168,17 @@ public class SpawnEnemies : MonoBehaviour
         wave++;
         enemiesPerWave += 1;
         isSpawningWave = false;
+        NotifyUI();
     }
 
-
+    private void NotifyUI()
+    {
+        if (uIController != null)
+        {
+            uIController.CountEnemies();
+            uIController.CountWave();
+        }
+    }
 
     //metodos para contar los enemigos activos
     public int EnemysEnable()
@@ -176,12 +195,13 @@ public class SpawnEnemies : MonoBehaviour
 
     }
 
-
     //metodo para desactivar un enemigo
     public void DisablePrefabs(GameObject Enemy)
     {
+        count++;
         Enemy.SetActive(false);
+        uIController.SumarScore(count);
         economySystem.EnemyDefeated(Enemy);
-        healthSystem.EnemyDestroyed(Enemy);
+        uIController.CountEnemies();
     }
 }
