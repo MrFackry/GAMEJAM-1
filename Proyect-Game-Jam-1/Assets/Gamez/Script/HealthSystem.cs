@@ -16,7 +16,7 @@ public class HealthSystem : MonoBehaviour
     public void EnemyDestroyed(GameObject enemy)
     {
         economySystem.EnemyDefeated(enemy); // Recompensa monetaria del jugador
-        enemy.SetActive(false);
+        spawnEnemies.DisablePrefabs(enemy);
     }
     public void TakeDamage(GameObject enemy)
     {
