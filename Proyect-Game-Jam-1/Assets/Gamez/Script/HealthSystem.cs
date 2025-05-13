@@ -3,16 +3,18 @@ using UnityEngine.UI; // Necesario para usar Slider
 
 public class HealthSystem : MonoBehaviour
 {
-    public int playerHealth = 200; // Vida inicial del jugador
+    public float playerHealth = 200; // Vida inicial del jugador
     public Slider healthSlider; // Referencia al Slider de la UI
 
     private EconomySystem economySystem;
     private SpawnEnemies spawnEnemies;
+    private UIController uIController;
 
     void Start()
     {
         economySystem = FindFirstObjectByType<EconomySystem>();
         spawnEnemies = FindFirstObjectByType<SpawnEnemies>();
+        uIController = FindFirstObjectByType<UIController>();
 
         // Inicializar el Slider
         if (healthSlider != null)
@@ -53,6 +55,7 @@ public class HealthSystem : MonoBehaviour
                 {
                     Debug.Log("¡El jugador ha sido derrotado!");
                     // Lógica de fin de juego aquí
+                    uIController.GameOver();
                 }
             }
         }

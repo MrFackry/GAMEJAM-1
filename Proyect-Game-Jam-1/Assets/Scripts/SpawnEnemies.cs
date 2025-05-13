@@ -202,7 +202,6 @@ public class SpawnEnemies : MonoBehaviour
         Enemy.SetActive(false);
         uIController.SumarScore(count);
         economySystem.EnemyDefeated(Enemy);
-        healthSystem.EnemyDestroyed(Enemy);
         uIController.CountEnemies();
     }
 }

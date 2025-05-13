@@ -52,8 +52,15 @@ public class UIController : MonoBehaviour
          
     {
         Debug.Log("¡El jugador ha sido derrotado!");
-        uiController.IsGameOver = true; // Marca el juego como terminado
-        uiController.panelGameOver.SetActive(true); // Muestra el panel de Game Over
+        IsGameOver = true; // Marca el juego como terminado
+        panelGameOver.SetActive(true);
+        if (IsGameOver)
+        {
+         // Muestra el panel de Game Over
+            isPlay=false;
+            panelGemplay.SetActive(false);
+        }
+        
     }
 
     }
