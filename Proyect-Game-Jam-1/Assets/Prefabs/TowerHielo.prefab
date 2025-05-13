@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4762595822748386583}
   - component: {fileID: 8372580276374425545}
   - component: {fileID: 5830829023752547878}
+  - component: {fileID: 4936946319244795943}
   m_Layer: 0
   m_Name: TowerHielo
   m_TagString: TowerHielo
@@ -128,3 +129,15 @@ MonoBehaviour:
   damage: 10
   price: 100
   Tower: {fileID: 4680418589292154013}
+--- !u!114 &4936946319244795943
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4680418589292154013}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff7196b931466a6448cf841b855ab5fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

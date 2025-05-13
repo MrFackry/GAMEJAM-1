@@ -70,4 +70,16 @@ public class EconomySystem : MonoBehaviour
          FindAnyObjectByType<UIController>().CountCoint();
         Debug.Log($"Ronda terminada. Recibiste {roundReward} monedas. Total: {playerCoins}");
     }
+
+    public void SellTower(GameObject tower)
+{
+    TowerIA towerIA = tower.GetComponent<TowerIA>();
+    if (towerIA != null)
+    {
+        int sellPrice = Mathf.FloorToInt(towerIA.GetPrice() * 0.5f); // 50% del precio original
+        playerCoins += sellPrice;
+        FindAnyObjectByType<UIController>().CountCoint();
+        Debug.Log($"Vendiste la torre por {sellPrice} monedas. Total: {playerCoins}");
+    }
+}
 }
