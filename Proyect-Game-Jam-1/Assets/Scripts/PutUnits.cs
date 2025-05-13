@@ -5,6 +5,7 @@ public class PutUnits : MonoBehaviour
 {
     //atributos serializados
     [SerializeField] GameObject unitPrefab;
+    [SerializeField]List<GameObject> TowerList = new List<GameObject>();
     private EconomySystem economySystem;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

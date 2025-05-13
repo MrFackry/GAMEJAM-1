@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -7060059675490159042}
   m_Layer: 0
   m_Name: TowerFuego
-  m_TagString: TowerPosion
+  m_TagString: TowerFuego
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -123,8 +123,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77570b9dbf0ea7547b9f9c571a9dc4e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  range: 0
-  timeShoot: 0
-  damage: 0
-  price: 0
-  Tower: {fileID: 0}
+  range: 15
+  timeShoot: 3
+  damage: 10
+  price: 100
+  Tower: {fileID: 4680418589292154013}

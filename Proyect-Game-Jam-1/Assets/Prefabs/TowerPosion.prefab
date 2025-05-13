@@ -66,7 +66,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c7c7a9ff400fc1d428f4251994c26b9e, type: 2}
+  - {fileID: 2100000, guid: f1e9faaf975b9cb4494181ab1b486c9f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -126,7 +126,7 @@ MonoBehaviour:
   range: 10
   timeShoot: 10
   damage: 10
-  price: 0
+  price: 120
   slowDuration: 5
   slowAmount: 0.2
   slowInterval: 10

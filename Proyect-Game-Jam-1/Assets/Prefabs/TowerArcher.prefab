@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 2944825885690114089}
   m_Layer: 0
   m_Name: TowerArcher
-  m_TagString: TowerPosion
+  m_TagString: TowerArcher
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -66,7 +66,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c7c7a9ff400fc1d428f4251994c26b9e, type: 2}
+  - {fileID: 2100000, guid: 36707386437da6440a889270f7437e0b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -123,8 +123,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5a408d59660a9e4786aa503269ef808, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  range: 0
-  timeShoot: 0
-  damage: 0
-  price: 0
+  range: 20
+  timeShoot: 2
+  damage: 10
+  price: 100
   boostedAttackMultiplier: 2
